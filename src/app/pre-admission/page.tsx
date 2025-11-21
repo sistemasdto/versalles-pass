@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { mockAuth, mockDB, mockStorage, generateUniqueQR } from '@/lib/mock-storage'
-import { INSURANCE_PROVIDERS } from '@/lib/demo-data'
+import { INSURANCE_PROVIDERS, SURGERY_TYPES, SCHEDULED_SURGERIES, DOCTORS } from '@/lib/demo-data'
 import { WizardSteps } from '@/components/WizardSteps'
 import { SignaturePad } from '@/components/SignaturePad'
 import { DocumentUpload } from '@/components/DocumentUpload'
@@ -514,84 +514,204 @@ export default function PreAdmissionPage() {
 
           {/* PASO 2: Información Quirúrgica */}
           {currentStep === 2 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Información Quirúrgica</CardTitle>
-                <CardDescription>
-                  Detalles de su procedimiento quirúrgico
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <Input
-                      label="Tipo de Cirugía"
-                      placeholder="Ej: Apendicectomía, Cesárea, etc."
-                      value={surgeryInfo.surgery_type}
-                      onChange={(e) => setSurgeryInfo({ ...surgeryInfo, surgery_type: e.target.value })}
-                      error={errors.surgery_type}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Input
-                      label="Nombre del Cirujano"
-                      placeholder="Dr(a)."
-                      value={surgeryInfo.surgeon_name}
-                      onChange={(e) => setSurgeryInfo({ ...surgeryInfo, surgeon_name: e.target.value })}
-                      error={errors.surgeon_name}
-                      required
-                    />
-                  </div>
-                  <Input
-                    type="date"
-                    label="Fecha Programada"
-                    value={surgeryInfo.scheduled_date}
-                    onChange={(e) => setSurgeryInfo({ ...surgeryInfo, scheduled_date: e.target.value })}
-                    error={errors.scheduled_date}
-                    required
-                  />
-                  <Input
-                    type="time"
-                    label="Hora Programada"
-                    value={surgeryInfo.scheduled_time}
-                    onChange={(e) => setSurgeryInfo({ ...surgeryInfo, scheduled_time: e.target.value })}
-                  />
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                      Notas Adicionales
-                    </label>
-                    <textarea
-                      value={surgeryInfo.notes}
-                      onChange={(e) => setSurgeryInfo({ ...surgeryInfo, notes: e.target.value })}
-                      rows={3}
-                      className="w-full px-4 py-2.5 rounded-medical border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      placeholder="Información adicional relevante..."
-                    />
-                  </div>
-                </div>
+            <div className="space-y-6">
+              {/* Cirugías Pre-programadas */}
+              {SCHEDULED_SURGERIES.length > 0 && (
+                <Card className="border-2 border-primary-200 bg-gradient-to-br from-primary-50 to-white">
+                  <CardHeader>
+                    <CardTitle className="text-primary-700">🏥 Cirugías Programadas</CardTitle>
+                    <CardDescription>
+                      Su médico ya ha programado estas cirugías. Seleccione una para continuar o registre una nueva.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {SCHEDULED_SURGERIES.map((scheduled) => {
+                        const doctor = DOCTORS.find(d => d.id === scheduled.doctor_id)
+                        return (
+                          <div
+                            key={scheduled.id}
+                            onClick={() => {
+                              setSurgeryInfo({
+                                use_scheduled: true,
+                                scheduled_surgery_id: scheduled.id,
+                                surgery_type: scheduled.surgery_type,
+                                surgeon_id: scheduled.doctor_id,
+                                surgeon_name: scheduled.doctor_name,
+                                professional_license: scheduled.professional_license,
+                                scheduled_date: scheduled.scheduled_date,
+                                scheduled_time: scheduled.scheduled_time,
+                                estimated_duration_hours: scheduled.estimated_duration_hours,
+                                room_number: scheduled.room_number,
+                                estimated_stay_days: scheduled.estimated_stay_days,
+                                notes: '',
+                              })
+                            }}
+                            className={`p-4 rounded-medical border-2 cursor-pointer transition-all ${
+                              surgeryInfo.scheduled_surgery_id === scheduled.id
+                                ? 'border-navy-500 bg-navy-50 shadow-md'
+                                : 'border-gray-300 hover:border-primary-500 hover:shadow-sm bg-white'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-navy-700 text-lg mb-1">
+                                  {scheduled.surgery_name}
+                                </h4>
+                                <p className="text-sm text-gray-600 mb-2">
+                                  <span className="font-medium">{doctor?.full_name}</span> • {doctor?.specialty}
+                                </p>
+                                <div className="flex flex-wrap gap-2 text-xs">
+                                  <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full">
+                                    📅 {new Date(scheduled.scheduled_date).toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                  </span>
+                                  <span className="px-2 py-1 bg-gold-100 text-gold-700 rounded-full">
+                                    🏥 Habitación {scheduled.room_number}
+                                  </span>
+                                  <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full">
+                                    ⏱️ {scheduled.estimated_duration_hours}h estimadas
+                                  </span>
+                                  <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                                    🛏️ {scheduled.estimated_stay_days} días de estancia
+                                  </span>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-2">
+                                  Cédula Profesional: {scheduled.professional_license}
+                                </p>
+                              </div>
+                              {surgeryInfo.scheduled_surgery_id === scheduled.id && (
+                                <div className="ml-4 flex-shrink-0">
+                                  <div className="w-6 h-6 bg-navy-500 rounded-full flex items-center justify-center">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                <div className="mt-6 flex justify-between">
-                  <Button
-                    variant="outline"
-                    onClick={() => setCurrentStep(1)}
-                    className="gap-2"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    Atrás
-                  </Button>
-                  <Button
-                    onClick={handleSurgeryInfoSubmit}
-                    isLoading={loading}
-                    disabled={loading}
-                    className="gap-2"
-                  >
-                    Continuar
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Formulario Manual */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Información Quirúrgica Manual</CardTitle>
+                  <CardDescription>
+                    {surgeryInfo.use_scheduled
+                      ? 'Puede modificar la información pre-cargada si es necesario'
+                      : 'Complete la información de su procedimiento quirúrgico'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Tipo de Cirugía - Dropdown */}
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Tipo de Cirugía <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={surgeryInfo.surgery_type}
+                        onChange={(e) => setSurgeryInfo({ ...surgeryInfo, surgery_type: e.target.value })}
+                        className="w-full px-4 py-2.5 rounded-medical border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value="">Seleccione el tipo de cirugía...</option>
+                        {SURGERY_TYPES.map((type) => (
+                          <option key={type.value} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.surgery_type && (
+                        <p className="text-red-500 text-xs mt-1">{errors.surgery_type}</p>
+                      )}
+                    </div>
+
+                    {/* Selección de Doctor */}
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Cirujano Asignado <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={surgeryInfo.surgeon_id}
+                        onChange={(e) => {
+                          const doctor = DOCTORS.find(d => d.id === e.target.value)
+                          setSurgeryInfo({
+                            ...surgeryInfo,
+                            surgeon_id: e.target.value,
+                            surgeon_name: doctor?.full_name || '',
+                            professional_license: doctor?.professional_license || '',
+                          })
+                        }}
+                        className="w-full px-4 py-2.5 rounded-medical border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      >
+                        <option value="">Seleccione un doctor...</option>
+                        {DOCTORS.map((doctor) => (
+                          <option key={doctor.id} value={doctor.id}>
+                            {doctor.full_name} - {doctor.specialty} (Cédula: {doctor.professional_license})
+                          </option>
+                        ))}
+                      </select>
+                      {errors.surgeon_name && (
+                        <p className="text-red-500 text-xs mt-1">{errors.surgeon_name}</p>
+                      )}
+                    </div>
+
+                    <Input
+                      type="date"
+                      label="Fecha Programada"
+                      value={surgeryInfo.scheduled_date}
+                      onChange={(e) => setSurgeryInfo({ ...surgeryInfo, scheduled_date: e.target.value })}
+                      error={errors.scheduled_date}
+                      required
+                    />
+                    <Input
+                      type="time"
+                      label="Hora Programada"
+                      value={surgeryInfo.scheduled_time}
+                      onChange={(e) => setSurgeryInfo({ ...surgeryInfo, scheduled_time: e.target.value })}
+                    />
+
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Notas Adicionales
+                      </label>
+                      <textarea
+                        value={surgeryInfo.notes}
+                        onChange={(e) => setSurgeryInfo({ ...surgeryInfo, notes: e.target.value })}
+                        rows={3}
+                        className="w-full px-4 py-2.5 rounded-medical border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        placeholder="Información adicional relevante..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex justify-between">
+                    <Button
+                      variant="outline"
+                      onClick={() => setCurrentStep(1)}
+                      className="gap-2"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Atrás
+                    </Button>
+                    <Button
+                      onClick={handleSurgeryInfoSubmit}
+                      isLoading={loading}
+                      disabled={loading}
+                      className="gap-2"
+                    >
+                      Continuar
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* PASO 3: Documentos */}
