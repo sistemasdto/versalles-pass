@@ -322,8 +322,10 @@ export default function PreAdmissionPage() {
                     <Input
                       label="Alergias"
                       placeholder="Ninguna o especifique"
-                      value={personalInfo.allergies}
-                      onChange={(e) => setPersonalInfo({ ...personalInfo, allergies: e.target.value })}
+                      value={personalInfo.allergies.join(', ')}
+                      onChange={(e) => setPersonalInfo({ ...personalInfo, allergies: e.target.value ? [e.target.value as any] : [] })}
+                      disabled
+                      helperText="Próximamente: selección por checkboxes"
                     />
                   </div>
                   <div>
@@ -338,6 +340,10 @@ export default function PreAdmissionPage() {
                       <option value="">Seleccione</option>
                       <option value="A+">A+</option>
                       <option value="A-">A-</option>
+                      <option value="A1+">A1+</option>
+                      <option value="A1-">A1-</option>
+                      <option value="A2+">A2+</option>
+                      <option value="A2-">A2-</option>
                       <option value="B+">B+</option>
                       <option value="B-">B-</option>
                       <option value="AB+">AB+</option>
