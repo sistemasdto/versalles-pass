@@ -114,25 +114,54 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Sugerencias de Email */}
-            <div className="mt-4 p-3 bg-gray-50 rounded-medical">
-              <p className="text-xs font-medium text-gray-700 mb-2">Ejemplos de email para probar:</p>
-              <div className="flex flex-wrap gap-2">
+            {/* Usuarios Demo Pre-cargados */}
+            <div className="mt-4 p-4 bg-gradient-to-br from-navy-50 to-primary-50 rounded-medical border border-navy-200">
+              <p className="text-sm font-semibold text-navy-700 mb-3">
+                👤 Usuarios Demo (con datos pre-cargados):
+              </p>
+              <div className="space-y-2">
                 <button
                   type="button"
-                  onClick={() => setEmail('maria.sanchez@demo.com')}
-                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-navy-500 transition-colors"
+                  onClick={() => setEmail('cesaromardominguez-a@hotmail.com')}
+                  className="w-full text-left px-4 py-3 bg-white border-2 border-navy-200 rounded-medical hover:border-navy-500 hover:shadow-md transition-all group"
                 >
-                  maria.sanchez@demo.com
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-navy-700 group-hover:text-navy-900">
+                        cesaromardominguez-a@hotmail.com
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        César O. Domínguez • Ortopedia • Artroscopía de Rodilla
+                      </p>
+                    </div>
+                    <span className="text-xs px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full">
+                      Cirugía General
+                    </span>
+                  </div>
                 </button>
                 <button
                   type="button"
-                  onClick={() => setEmail('juan.perez@demo.com')}
-                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-navy-500 transition-colors"
+                  onClick={() => setEmail('arely.arriaga@gmail.com')}
+                  className="w-full text-left px-4 py-3 bg-white border-2 border-primary-200 rounded-medical hover:border-primary-500 hover:shadow-md transition-all group"
                 >
-                  juan.perez@demo.com
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-navy-700 group-hover:text-navy-900">
+                        arely.arriaga@gmail.com
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Arely G. Arriaga • Maternidad • Cesárea Programada
+                      </p>
+                    </div>
+                    <span className="text-xs px-2 py-1 bg-pink-100 text-pink-700 rounded-full flex items-center gap-1">
+                      👶 Maternal
+                    </span>
+                  </div>
                 </button>
               </div>
+              <p className="text-xs text-navy-600 mt-3 italic">
+                Estos usuarios tienen cirugías programadas y datos completos para demostración
+              </p>
             </div>
           </CardContent>
         </Card>

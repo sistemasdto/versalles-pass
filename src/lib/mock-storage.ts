@@ -4,6 +4,7 @@
 // =====================================================
 
 import type { Patient, Admission, Document } from '@/types'
+import { getDemoUserByEmail } from './demo-users'
 
 const STORAGE_KEYS = {
   PATIENTS: 'versalles_pass_patients',
@@ -11,6 +12,7 @@ const STORAGE_KEYS = {
   DOCUMENTS: 'versalles_pass_documents',
   CURRENT_USER: 'versalles_pass_current_user',
   SESSION: 'versalles_pass_session',
+  DEMO_INITIALIZED: 'versalles_pass_demo_initialized',
 }
 
 // =====================================================
@@ -21,6 +23,28 @@ export const mockAuth = {
   signInWithEmail: async (email: string) => {
     // Simular delay de red
     await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // Verificar si es un usuario demo y pre-cargar datos
+    const demoUser = getDemoUserByEmail(email)
+    if (demoUser) {
+      // Pre-cargar datos del usuario demo
+      const patients = getAllPatients()
+      const admissions = getAllAdmissions()
+
+      // Verificar si el paciente ya existe
+      const existingPatient = patients.find(p => p.user_id === demoUser.patient.user_id)
+      if (!existingPatient) {
+        patients.push(demoUser.patient)
+        localStorage.setItem(STORAGE_KEYS.PATIENTS, JSON.stringify(patients))
+      }
+
+      // Verificar si la admisión ya existe
+      const existingAdmission = admissions.find(a => a.id === demoUser.admission.id)
+      if (!existingAdmission) {
+        admissions.push(demoUser.admission)
+        localStorage.setItem(STORAGE_KEYS.ADMISSIONS, JSON.stringify(admissions))
+      }
+    }
 
     // Guardar "sesión"
     const session = {
