@@ -21,9 +21,11 @@ export const personalInfoSchema = z.object({
   email: z.string()
     .email('Email inválido'),
 
-  allergies: z.string().optional(),
+  allergies: z.array(z.enum(['penicilina', 'aspirina', 'latex', 'yodo', 'anestesia', 'sulfa', 'ninguna', 'otros'])),
 
-  blood_type: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+  allergies_other: z.string().optional(),
+
+  blood_type: z.enum(['A+', 'A-', 'A1+', 'A1-', 'A2+', 'A2-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
 
   address: z.string().optional(),
 
@@ -43,17 +45,29 @@ export const personalInfoSchema = z.object({
 
   emergency_contact_relationship: z.string()
     .min(2, 'Especifique la relación con el contacto'),
+
+  insurance_provider: z.string().optional(),
+
+  insurance_policy_number: z.string().optional(),
 })
 
 // =====================================================
 // SURGERY INFO SCHEMA
 // =====================================================
 export const surgeryInfoSchema = z.object({
+  use_scheduled: z.boolean().optional(),
+
+  scheduled_surgery_id: z.string().optional(),
+
   surgery_type: z.string()
     .min(3, 'Especifique el tipo de cirugía'),
 
+  surgeon_id: z.string().optional(),
+
   surgeon_name: z.string()
     .min(3, 'Nombre del cirujano requerido'),
+
+  professional_license: z.string().optional(),
 
   scheduled_date: z.string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato de fecha inválido'),
@@ -61,6 +75,12 @@ export const surgeryInfoSchema = z.object({
   scheduled_time: z.string()
     .regex(/^\d{2}:\d{2}$/, 'Formato de hora inválido (HH:MM)')
     .optional(),
+
+  estimated_duration_hours: z.number().optional(),
+
+  room_number: z.string().optional(),
+
+  estimated_stay_days: z.number().optional(),
 
   notes: z.string().optional(),
 })
