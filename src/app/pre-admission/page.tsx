@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { mockAuth, mockDB, mockStorage, generateUniqueQR } from '@/lib/mock-storage'
+import { INSURANCE_PROVIDERS } from '@/lib/demo-data'
 import { WizardSteps } from '@/components/WizardSteps'
 import { SignaturePad } from '@/components/SignaturePad'
 import { DocumentUpload } from '@/components/DocumentUpload'
@@ -15,7 +16,19 @@ import { Input } from '@/components/ui/Input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
 import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react'
 import { personalInfoSchema, surgeryInfoSchema } from '@/lib/validations'
-import type { WizardStep, PersonalInfoForm, SurgeryInfoForm, DocumentType } from '@/types'
+import type { WizardStep, PersonalInfoForm, SurgeryInfoForm, DocumentType, CommonAllergy } from '@/types'
+
+// Alergias comunes para checkboxes
+const COMMON_ALLERGIES: { value: CommonAllergy; label: string }[] = [
+  { value: 'penicilina', label: 'Penicilina' },
+  { value: 'aspirina', label: 'Aspirina' },
+  { value: 'latex', label: 'Látex' },
+  { value: 'yodo', label: 'Yodo' },
+  { value: 'anestesia', label: 'Anestesia' },
+  { value: 'sulfa', label: 'Sulfa' },
+  { value: 'ninguna', label: 'Ninguna' },
+  { value: 'otros', label: 'Otros' },
+]
 
 const steps: WizardStep[] = [
   { id: 1, title: 'Datos Personales', description: 'Información básica', icon: 'user', status: 'current' },
@@ -237,6 +250,38 @@ export default function PreAdmissionPage() {
     }
   }
 
+  // Manejar selección de alergias con checkboxes
+  const handleAllergyToggle = (allergy: CommonAllergy) => {
+    const currentAllergies = [...personalInfo.allergies]
+
+    // Si selecciona "ninguna", limpiar todas las demás
+    if (allergy === 'ninguna') {
+      setPersonalInfo({
+        ...personalInfo,
+        allergies: currentAllergies.includes('ninguna') ? [] : ['ninguna'],
+        allergies_other: '',
+      })
+      return
+    }
+
+    // Si hay "ninguna" y selecciona otra, quitar "ninguna"
+    const filteredAllergies = currentAllergies.filter(a => a !== 'ninguna')
+
+    // Toggle la alergia seleccionada
+    if (filteredAllergies.includes(allergy)) {
+      setPersonalInfo({
+        ...personalInfo,
+        allergies: filteredAllergies.filter(a => a !== allergy),
+        allergies_other: allergy === 'otros' ? '' : personalInfo.allergies_other,
+      })
+    } else {
+      setPersonalInfo({
+        ...personalInfo,
+        allergies: [...filteredAllergies, allergy],
+      })
+    }
+  }
+
   const wizardSteps: WizardStep[] = steps.map((step, index) => ({
     ...step,
     status:
@@ -318,15 +363,38 @@ export default function PreAdmissionPage() {
                     error={errors.email}
                     required
                   />
+                  {/* Alergias con Checkboxes */}
                   <div className="md:col-span-2">
-                    <Input
-                      label="Alergias"
-                      placeholder="Ninguna o especifique"
-                      value={personalInfo.allergies.join(', ')}
-                      onChange={(e) => setPersonalInfo({ ...personalInfo, allergies: e.target.value ? [e.target.value as any] : [] })}
-                      disabled
-                      helperText="Próximamente: selección por checkboxes"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      Alergias <span className="text-red-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {COMMON_ALLERGIES.map((allergy) => (
+                        <label
+                          key={allergy.value}
+                          className="flex items-center gap-2 p-3 rounded-medical border border-gray-300 hover:border-primary-500 cursor-pointer transition-colors bg-white"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={personalInfo.allergies.includes(allergy.value)}
+                            onChange={() => handleAllergyToggle(allergy.value)}
+                            className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                          />
+                          <span className="text-sm text-gray-700">{allergy.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {/* Campo de texto para "Otros" */}
+                    {personalInfo.allergies.includes('otros') && (
+                      <div className="mt-3">
+                        <Input
+                          label="Especifique otras alergias"
+                          placeholder="Describa otras alergias..."
+                          value={personalInfo.allergies_other}
+                          onChange={(e) => setPersonalInfo({ ...personalInfo, allergies_other: e.target.value })}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -395,6 +463,38 @@ export default function PreAdmissionPage() {
                     error={errors.emergency_contact_relationship}
                     required
                   />
+
+                  {/* Información de Seguro */}
+                  <div className="md:col-span-2 border-t pt-4 mt-4">
+                    <h3 className="font-semibold text-gray-900 mb-4">Información de Seguro Médico (Opcional)</h3>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                      Aseguradora
+                    </label>
+                    <select
+                      value={personalInfo.insurance_provider}
+                      onChange={(e) => setPersonalInfo({ ...personalInfo, insurance_provider: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-medical border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      <option value="">Seleccione...</option>
+                      {INSURANCE_PROVIDERS.map((provider) => (
+                        <option key={provider} value={provider}>
+                          {provider}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {personalInfo.insurance_provider && personalInfo.insurance_provider !== 'Sin seguro (pago directo)' && (
+                    <Input
+                      label="Número de Póliza"
+                      placeholder="ABC-2024-123456"
+                      value={personalInfo.insurance_policy_number}
+                      onChange={(e) => setPersonalInfo({ ...personalInfo, insurance_policy_number: e.target.value })}
+                    />
+                  )}
                 </div>
 
                 <div className="mt-6 flex justify-end">
