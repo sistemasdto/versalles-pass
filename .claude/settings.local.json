@@ -10,7 +10,8 @@
       "Bash(npm install:*)",
       "Bash(vercel login)",
       "Bash(vercel:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "WebFetch(domain:versalles-pass-77wlk2a5s-sistemasdtos-projects.vercel.app)"
     ],
     "deny": [],
     "ask": []

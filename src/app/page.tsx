@@ -3,6 +3,7 @@
 // =====================================================
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { ArrowRight, Shield, Clock, FileCheck, QrCode } from 'lucide-react'
 
@@ -10,20 +11,21 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-navy-100 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">V</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">Versalles Pass</h1>
-                <p className="text-xs text-gray-600">Hospital Versalles</p>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Versalles Pass Logo"
+                width={180}
+                height={60}
+                className="h-12 w-auto"
+                priority
+              />
             </div>
             <Link href="/login">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-navy-500 text-navy-500 hover:bg-navy-50">
                 Iniciar Sesión
               </Button>
             </Link>
@@ -38,12 +40,12 @@ export default function HomePage() {
             Pre-admisión Quirúrgica Digital
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-navy-500 mb-6">
             Su cirugía comienza con un
             <span className="text-primary-500"> clic</span>
           </h1>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-navy-300 mb-8 max-w-2xl mx-auto">
             Complete su pre-admisión quirúrgica desde casa de forma segura, rápida y sin papeleo.
             Todo listo en menos de 10 minutos.
           </p>
@@ -118,7 +120,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-primary-500 text-white py-16">
+      <section className="bg-gradient-to-r from-navy-500 to-secondary-500 text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">
             ¿Listo para su Pre-admisión Digital?
@@ -127,7 +129,7 @@ export default function HomePage() {
             Complete su proceso ahora y llegue al hospital sin preocupaciones
           </p>
           <Link href="/login">
-            <Button size="lg" variant="secondary" className="gap-2">
+            <Button size="lg" className="gap-2 bg-white text-navy-500 hover:bg-gray-100">
               Comenzar Ahora
               <ArrowRight className="w-5 h-5" />
             </Button>
