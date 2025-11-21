@@ -39,7 +39,8 @@ export default function PreAdmissionPage() {
     date_of_birth: '',
     phone: '',
     email: '',
-    allergies: '',
+    allergies: [],
+    allergies_other: '',
     blood_type: '',
     address: '',
     city: 'Guadalajara',
@@ -48,13 +49,22 @@ export default function PreAdmissionPage() {
     emergency_contact_name: '',
     emergency_contact_phone: '',
     emergency_contact_relationship: '',
+    insurance_provider: '',
+    insurance_policy_number: '',
   })
 
   const [surgeryInfo, setSurgeryInfo] = useState<SurgeryInfoForm>({
+    use_scheduled: false,
+    scheduled_surgery_id: '',
     surgery_type: '',
+    surgeon_id: '',
     surgeon_name: '',
+    professional_license: '',
     scheduled_date: '',
     scheduled_time: '',
+    estimated_duration_hours: 0,
+    room_number: '',
+    estimated_stay_days: 0,
     notes: '',
   })
 
