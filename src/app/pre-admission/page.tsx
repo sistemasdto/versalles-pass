@@ -717,15 +717,46 @@ export default function PreAdmissionPage() {
           {/* PASO 3: Documentos */}
           {currentStep === 3 && (
             <div className="space-y-4">
-              <Card>
+              {/* Header con indicador de progreso */}
+              <Card className="border-2 border-primary-200">
                 <CardHeader>
-                  <CardTitle>Documentos Requeridos</CardTitle>
+                  <div className="flex items-center justify-between mb-2">
+                    <CardTitle>Documentos Requeridos</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-navy-500">
+                        {Object.values(uploadedDocs).filter(Boolean).length}
+                      </span>
+                      <span className="text-gray-600">/</span>
+                      <span className="text-lg text-gray-500">
+                        {Object.keys(uploadedDocs).length}
+                      </span>
+                      <span className="text-sm text-gray-600 ml-1">documentos</span>
+                    </div>
+                  </div>
                   <CardDescription>
-                    Suba sus documentos en formato PDF, JPG o PNG (máximo 5MB cada uno)
+                    Suba sus documentos en formato PDF, JPG o PNG (máximo 5MB cada uno). Puede continuar sin todos los documentos.
                   </CardDescription>
+
+                  {/* Barra de progreso */}
+                  <div className="mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-primary-500 to-navy-500 h-3 rounded-full transition-all duration-500 ease-out"
+                        style={{
+                          width: `${(Object.values(uploadedDocs).filter(Boolean).length / Object.keys(uploadedDocs).length) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">
+                      {Object.values(uploadedDocs).filter(Boolean).length === Object.keys(uploadedDocs).length
+                        ? '¡Excelente! Todos los documentos cargados ✓'
+                        : `${Object.keys(uploadedDocs).length - Object.values(uploadedDocs).filter(Boolean).length} documento(s) pendiente(s)`}
+                    </p>
+                  </div>
                 </CardHeader>
               </Card>
 
+              {/* Documentos */}
               <DocumentUpload
                 documentType="ine"
                 onUpload={handleDocumentUpload}
@@ -738,6 +769,37 @@ export default function PreAdmissionPage() {
                 existingFile={uploadedDocs.insurance ? 'uploaded' : undefined}
               />
 
+              {/* Advertencia de documentos faltantes */}
+              {Object.values(uploadedDocs).filter(Boolean).length < Object.keys(uploadedDocs).length && (
+                <Card className="border-2 border-yellow-300 bg-yellow-50">
+                  <CardContent className="pt-6">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0">
+                        <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-yellow-900 mb-1">
+                          Documentos Incompletos
+                        </h4>
+                        <p className="text-sm text-yellow-800 mb-3">
+                          Puede continuar con el proceso de pre-admisión, sin embargo, los documentos faltantes deberán ser presentados en persona al momento de su ingreso al hospital.
+                        </p>
+                        <div className="text-xs text-yellow-700 bg-yellow-100 rounded-lg p-3">
+                          <p className="font-medium mb-1">📋 Documentos que deberá traer:</p>
+                          <ul className="list-disc list-inside space-y-1">
+                            {!uploadedDocs.ine && <li>Identificación Oficial (INE/Pasaporte)</li>}
+                            {!uploadedDocs.insurance && <li>Tarjeta de Seguro Médico o comprobante</li>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Botones de navegación */}
               <div className="flex justify-between pt-4">
                 <Button
                   variant="outline"
@@ -749,10 +811,11 @@ export default function PreAdmissionPage() {
                 </Button>
                 <Button
                   onClick={handleDocumentsNext}
-                  disabled={!uploadedDocs.ine || !uploadedDocs.insurance}
                   className="gap-2"
                 >
-                  Continuar
+                  {Object.values(uploadedDocs).filter(Boolean).length === Object.keys(uploadedDocs).length
+                    ? 'Continuar'
+                    : 'Continuar de todos modos'}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
