@@ -95,7 +95,8 @@ export default function PreAdmissionPage() {
           date_of_birth: patient.date_of_birth || '',
           phone: patient.phone || '',
           email: patient.email || '',
-          allergies: patient.allergies || '',
+          allergies: patient.allergies || [],
+          allergies_other: patient.allergies_other || '',
           blood_type: patient.blood_type || '',
           address: patient.address || '',
           city: patient.city || 'Guadalajara',
@@ -104,6 +105,8 @@ export default function PreAdmissionPage() {
           emergency_contact_name: patient.emergency_contact_name || '',
           emergency_contact_phone: patient.emergency_contact_phone || '',
           emergency_contact_relationship: patient.emergency_contact_relationship || '',
+          insurance_provider: patient.insurance_provider || '',
+          insurance_policy_number: patient.insurance_policy_number || '',
         })
       }
     }
