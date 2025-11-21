@@ -24,17 +24,26 @@ export const mockAuth = {
     // Simular delay de red
     await new Promise(resolve => setTimeout(resolve, 1000))
 
+    // Generar user_id consistente
+    const userId = generateUserId(email)
+
     // Verificar si es un usuario demo y pre-cargar datos
     const demoUser = getDemoUserByEmail(email)
     if (demoUser) {
-      // Pre-cargar datos del usuario demo
+      // Pre-cargar datos del usuario demo con el user_id correcto
       const patients = getAllPatients()
       const admissions = getAllAdmissions()
 
+      // Actualizar user_id del paciente demo para que coincida con el generado
+      const demoPatient = {
+        ...demoUser.patient,
+        user_id: userId,
+      }
+
       // Verificar si el paciente ya existe
-      const existingPatient = patients.find(p => p.user_id === demoUser.patient.user_id)
+      const existingPatient = patients.find(p => p.user_id === userId)
       if (!existingPatient) {
-        patients.push(demoUser.patient)
+        patients.push(demoPatient)
         localStorage.setItem(STORAGE_KEYS.PATIENTS, JSON.stringify(patients))
       }
 
@@ -49,7 +58,7 @@ export const mockAuth = {
     // Guardar "sesión"
     const session = {
       user: {
-        id: generateUserId(email),
+        id: userId,
         email,
       },
       expires_at: Date.now() + 24 * 60 * 60 * 1000, // 24 horas
