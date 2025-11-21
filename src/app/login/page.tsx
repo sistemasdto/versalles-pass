@@ -6,6 +6,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { mockAuth } from '@/lib/mock-storage'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -47,7 +48,17 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo y título */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-500 rounded-full mb-4">
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/logo.png"
+              alt="Versalles Pass Logo"
+              width={220}
+              height={80}
+              className="h-16 w-auto"
+              priority
+            />
+          </div>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-navy-500 rounded-full mb-4 hidden">
             <span className="text-white font-bold text-2xl">V</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Versalles Pass</h1>
@@ -110,14 +121,14 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setEmail('maria.sanchez@demo.com')}
-                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-primary-500 transition-colors"
+                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-navy-500 transition-colors"
                 >
                   maria.sanchez@demo.com
                 </button>
                 <button
                   type="button"
                   onClick={() => setEmail('juan.perez@demo.com')}
-                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-primary-500 transition-colors"
+                  className="text-xs px-3 py-1 bg-white border border-gray-200 rounded-full hover:border-navy-500 transition-colors"
                 >
                   juan.perez@demo.com
                 </button>
@@ -128,7 +139,7 @@ export default function LoginPage() {
 
         {/* Link de regreso */}
         <div className="mt-6 text-center">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary-500 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-navy-500 transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Volver al inicio
           </Link>

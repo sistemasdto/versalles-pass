@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { mockAuth, mockDB } from '@/lib/mock-storage'
 import { QRDisplay } from '@/components/QRDisplay'
 import { Button } from '@/components/ui/Button'
@@ -100,7 +101,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-navy-500" />
       </div>
     )
   }
@@ -116,17 +117,18 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white border-b border-navy-100">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">V</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-gray-900">Versalles Pass</h1>
-                <p className="text-xs text-gray-600">Dashboard del Paciente</p>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Versalles Pass Logo"
+                width={160}
+                height={50}
+                className="h-10 w-auto"
+                priority
+              />
             </div>
             <Button variant="ghost" onClick={handleLogout} size="sm" className="gap-2">
               <LogOut className="w-4 h-4" />
@@ -143,7 +145,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5 text-primary-500" />
+                <User className="w-5 h-5 text-navy-500" />
                 Bienvenido(a), {data.patient.full_name}
               </CardTitle>
             </CardHeader>
@@ -167,7 +169,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-primary-500" />
+                <Calendar className="w-5 h-5 text-navy-500" />
                 Detalles de su Cirugía
               </CardTitle>
             </CardHeader>
@@ -232,7 +234,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary-500" />
+                <FileText className="w-5 h-5 text-navy-500" />
                 Información de Contacto
               </CardTitle>
             </CardHeader>

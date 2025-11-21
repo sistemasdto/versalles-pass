@@ -50,7 +50,7 @@ export function QRDisplay({ qrCode, patientName, surgeryDate, pdfUrl }: QRDispla
         </div>
 
         {/* QR Code */}
-        <div className="bg-white p-6 rounded-medical border-2 border-primary-500 inline-block mx-auto">
+        <div className="bg-white p-6 rounded-medical border-2 border-navy-500 inline-block mx-auto">
           <QRCode
             value={qrCode}
             size={200}

@@ -42,7 +42,7 @@ export default function HomePage() {
 
           <h1 className="text-4xl md:text-6xl font-bold text-navy-500 mb-6">
             Su cirugía comienza con un
-            <span className="text-primary-500"> clic</span>
+            <span className="text-navy-500"> clic</span>
           </h1>
 
           <p className="text-xl text-navy-300 mb-8 max-w-2xl mx-auto">
@@ -101,17 +101,17 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             <BenefitCard
-              icon={<Clock className="w-12 h-12 text-primary-500" />}
+              icon={<Clock className="w-12 h-12 text-navy-500" />}
               title="Ahorre Tiempo"
               description="Complete su pre-admisión en 10 minutos desde casa. Sin filas ni esperas."
             />
             <BenefitCard
-              icon={<Shield className="w-12 h-12 text-primary-500" />}
+              icon={<Shield className="w-12 h-12 text-navy-500" />}
               title="100% Seguro"
               description="Sus datos están protegidos con encriptación de nivel bancario y cumpliendo NOM-024-SSA3."
             />
             <BenefitCard
-              icon={<QrCode className="w-12 h-12 text-primary-500" />}
+              icon={<QrCode className="w-12 h-12 text-navy-500" />}
               title="Ingreso Express"
               description="Presente su código QR y pase directo a preparación quirúrgica."
             />
@@ -157,7 +157,7 @@ export default function HomePage() {
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
     <div className="text-center">
-      <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-50 text-primary-500 rounded-full mb-4">
+      <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-50 text-navy-500 rounded-full mb-4">
         {icon}
       </div>
       <h3 className="font-semibold text-lg mb-2">{title}</h3>

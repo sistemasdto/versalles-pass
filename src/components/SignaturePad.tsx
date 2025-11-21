@@ -76,7 +76,7 @@ export function SignaturePad({ onSave, onClear, disabled = false }: SignaturePad
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Pen className="w-5 h-5 text-primary-500" />
+          <Pen className="w-5 h-5 text-navy-500" />
           Firma Digital
         </CardTitle>
         <p className="text-sm text-gray-600 mt-2">

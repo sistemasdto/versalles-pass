@@ -87,7 +87,7 @@ export function DocumentUpload({ documentType, onUpload, existingFile }: Documen
               'flex flex-col items-center justify-center w-full h-32',
               'border-2 border-dashed rounded-medical cursor-pointer',
               'bg-gray-50 hover:bg-gray-100 transition-colors',
-              error ? 'border-red-300' : 'border-gray-300 hover:border-primary-500'
+              error ? 'border-red-300' : 'border-gray-300 hover:border-navy-500'
             )}
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">

@@ -28,9 +28,9 @@ export function WizardSteps({ steps, currentStep }: WizardStepsProps) {
                     className={cn(
                       'flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all',
                       step.status === 'completed' &&
-                        'bg-primary-500 border-primary-500',
+                        'bg-navy-500 border-navy-500',
                       step.status === 'current' &&
-                        'border-primary-500 bg-white',
+                        'border-navy-500 bg-white',
                       step.status === 'pending' &&
                         'border-gray-300 bg-white'
                     )}
@@ -41,7 +41,7 @@ export function WizardSteps({ steps, currentStep }: WizardStepsProps) {
                       <span
                         className={cn(
                           'text-sm font-medium',
-                          step.status === 'current' && 'text-primary-500',
+                          step.status === 'current' && 'text-navy-500',
                           step.status === 'pending' && 'text-gray-500'
                         )}
                       >
@@ -71,7 +71,7 @@ export function WizardSteps({ steps, currentStep }: WizardStepsProps) {
                     className={cn(
                       'h-0.5 w-full mx-4 transition-all',
                       step.status === 'completed'
-                        ? 'bg-primary-500'
+                        ? 'bg-navy-500'
                         : 'bg-gray-300'
                     )}
                   />

@@ -11,7 +11,8 @@
       "Bash(vercel login)",
       "Bash(vercel:*)",
       "Bash(git push)",
-      "WebFetch(domain:versalles-pass-77wlk2a5s-sistemasdtos-projects.vercel.app)"
+      "WebFetch(domain:versalles-pass-77wlk2a5s-sistemasdtos-projects.vercel.app)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

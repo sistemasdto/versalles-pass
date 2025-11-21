@@ -16,9 +16,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = 'inline-flex items-center justify-center rounded-medical font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
 
     const variants = {
-      primary: 'bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-medical hover:shadow-medical-hover',
+      primary: 'bg-navy-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-medical hover:shadow-medical-hover',
       secondary: 'bg-silver-400 text-gray-900 hover:bg-silver-500 focus:ring-silver-400 shadow-medical hover:shadow-medical-hover',
-      outline: 'border-2 border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500',
+      outline: 'border-2 border-navy-500 text-navy-500 hover:bg-primary-50 focus:ring-primary-500',
       ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-300',
       danger: 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 shadow-medical hover:shadow-medical-hover',
     }
