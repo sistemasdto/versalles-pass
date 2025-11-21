@@ -3,12 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-medical-bg text-medical-text font-sans antialiased;
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
   }
 }
 

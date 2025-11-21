@@ -5,7 +5,7 @@
 
 'use client'
 
-import { QRCodeSVG } from 'react-qr-code'
+import QRCode from 'react-qr-code'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card'
 import { Download, CheckCircle } from 'lucide-react'
 import { Button } from './ui/Button'
@@ -51,11 +51,10 @@ export function QRDisplay({ qrCode, patientName, surgeryDate, pdfUrl }: QRDispla
 
         {/* QR Code */}
         <div className="bg-white p-6 rounded-medical border-2 border-primary-500 inline-block mx-auto">
-          <QRCodeSVG
+          <QRCode
             value={qrCode}
             size={200}
             level="H"
-            includeMargin={true}
           />
         </div>
 

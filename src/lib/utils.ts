@@ -60,3 +60,19 @@ export function generateUniqueFileName(originalName: string): string {
   const nameWithoutExt = originalName.replace(/\.[^/.]+$/, '')
   return `${nameWithoutExt}_${timestamp}_${random}.${extension}`
 }
+
+/**
+ * Valida el tamaño del archivo (máx 5MB)
+ */
+export function validateFileSize(file: File): boolean {
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  return file.size <= maxSize
+}
+
+/**
+ * Valida el tipo de archivo (PDF, JPEG, PNG)
+ */
+export function validateFileType(file: File): boolean {
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg']
+  return allowedTypes.includes(file.type)
+}
