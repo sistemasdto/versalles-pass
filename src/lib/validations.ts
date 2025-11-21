@@ -25,7 +25,7 @@ export const personalInfoSchema = z.object({
 
   allergies_other: z.string().optional(),
 
-  blood_type: z.enum(['A+', 'A-', 'A1+', 'A1-', 'A2+', 'A2-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+  blood_type: z.enum(['A+', 'A-', 'A1+', 'A2+', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
 
   address: z.string().optional(),
 

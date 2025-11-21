@@ -407,11 +407,9 @@ export default function PreAdmissionPage() {
                     >
                       <option value="">Seleccione</option>
                       <option value="A+">A+</option>
+                      <option value="A1+">A1+ (subtipo)</option>
+                      <option value="A2+">A2+ (subtipo)</option>
                       <option value="A-">A-</option>
-                      <option value="A1+">A1+</option>
-                      <option value="A1-">A1-</option>
-                      <option value="A2+">A2+</option>
-                      <option value="A2-">A2-</option>
                       <option value="B+">B+</option>
                       <option value="B-">B-</option>
                       <option value="AB+">AB+</option>
